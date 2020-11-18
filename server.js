@@ -3,7 +3,7 @@
 const fetch = require("node-fetch")
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 80
 
 const clientId = process.argv[2]
 const clientSecret = process.argv[3]
@@ -24,7 +24,7 @@ async function handleOAuth2(req, res) {
         code: req.query.code,
         client_id: clientId,
         client_secret: clientSecret,
-        redirect_uri: 'http://localhost:3000/oauth2callback',
+        redirect_uri: 'http://localhost:80/oauth2callback',
         grant_type: 'authorization_code'
       })
     }
@@ -32,7 +32,7 @@ async function handleOAuth2(req, res) {
   const tokenJson = await tokenResponse.json()
   const userInfo = await getUserInfo(tokenJson.access_token)
 
-  res.redirect(`http://localhost:3000?${Object.keys(userInfo).map(key => `${key}=${encodeURIComponent(userInfo[key])}`).join('&')}`)
+  res.redirect(`http://localhost:80?${Object.keys(userInfo).map(key => `${key}=${encodeURIComponent(userInfo[key])}`).join('&')}`)
 }
 
 async function getUserInfo(accessToken) {
